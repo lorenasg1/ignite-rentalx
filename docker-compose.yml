@@ -21,7 +21,7 @@ services:
       - 3333:3333
       - 9229:9229
     volumes:
-      - .:/user/app
+      - .:/usr/app
     links:
       - database
     depends_on:
