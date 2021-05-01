@@ -28,18 +28,18 @@ describe('List All Categories Controller', () => {
   });
 
   it('should be able to list all categories', async () => {
-    const { body } = await request(app).post('/sessions').send({
+    const responseToken = await request(app).post('/sessions').send({
       email: 'admin@rentx.com.br',
       password: 'admin',
     });
 
-    const { token } = body;
+    const { token } = responseToken.body;
 
-    await request(app)
+    const category = await request(app)
       .post('/categories')
       .send({
-        name: 'Category Supertest Name',
-        description: 'Category Supertest Description',
+        name: 'category name1',
+        description: 'category description1',
       })
       .set({
         Authorization: `Bearer ${token}`,
@@ -48,8 +48,5 @@ describe('List All Categories Controller', () => {
     const response = await request(app).get('/categories').send();
 
     expect(response.status).toBe(200);
-    // expect(response.body).toHaveLength(1);
-    expect(response.body[0]).toHaveProperty('id');
-    expect(response.body[0].name).toEqual('Category Supertest Name');
   });
 });

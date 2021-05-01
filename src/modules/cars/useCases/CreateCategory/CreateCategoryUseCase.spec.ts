@@ -32,21 +32,21 @@ describe('Create category', () => {
   });
 
   it('should not be able to crete a category with an existing name', async () => {
-    expect(async () => {
-      const category = {
-        name: 'Category name',
-        description: 'Category description',
-      };
+    const category = {
+      name: 'Category name',
+      description: 'Category description',
+    };
 
-      await createCategoryUseCase.execute({
+    await createCategoryUseCase.execute({
+      name: category.name,
+      description: category.description,
+    });
+
+    await expect(
+      createCategoryUseCase.execute({
         name: category.name,
         description: category.description,
-      });
-
-      await createCategoryUseCase.execute({
-        name: category.name,
-        description: category.description,
-      });
-    }).rejects.toBeInstanceOf(AppError);
+      }),
+    ).rejects.toEqual(new AppError('Category already exists'));
   });
 });

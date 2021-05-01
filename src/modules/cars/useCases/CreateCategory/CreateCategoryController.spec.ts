@@ -34,13 +34,11 @@ describe('Create Category Controller', () => {
 
     const { token } = responseToken.body;
 
-    // console.log(responseToken.body);
-
     const response = await request(app)
       .post('/categories')
       .send({
-        name: 'category_name',
-        description: 'category_description',
+        name: 'category name supertest',
+        description: 'category description supertest',
       })
       .set({
         Authorization: `Bearer ${token}`,
@@ -57,11 +55,21 @@ describe('Create Category Controller', () => {
 
     const { token } = responseToken.body;
 
+    await request(app)
+      .post('/categories')
+      .send({
+        name: 'category name supertest2',
+        description: 'category description supertest2',
+      })
+      .set({
+        Authorization: `Bearer ${token}`,
+      });
+
     const response = await request(app)
       .post('/categories')
       .send({
-        name: 'category_name',
-        description: 'category_description',
+        name: 'category name supertest2',
+        description: 'category description supertest2',
       })
       .set({
         Authorization: `Bearer ${token}`,
