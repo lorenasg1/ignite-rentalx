@@ -40,3 +40,6 @@ RentX is a car rental API developed during Rocketseat Ignite bootcamp.
 2. Setup a postgres database and the ormconfig file
 3. Run `typeorm migration:run` to execute the migrations
 4. Run `yarn dev` to start the delopment server
+
+## License
+This project is under [MIT License](https://github.com/lorenasg1/ignite-rentx/blob/main/LICENSE).
