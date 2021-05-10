@@ -10,6 +10,7 @@ RentX is a car rental API developed during Rocketseat Ignite bootcamp.
 - TypeORM
 - Postgres
 - Redis 
+- Docker
 - AWS (EC2, SES, Route53)
 
 ## Features
