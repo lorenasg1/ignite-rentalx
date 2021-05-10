@@ -1,19 +1,30 @@
 import 'reflect-metadata';
-import '@shared/container';
-import express, { json, NextFunction, Request, Response } from 'express';
-import swaggerUi from 'swagger-ui-express';
+import 'dotenv/config';
 import 'express-async-errors';
+import express, { json, NextFunction, Request, Response } from 'express';
 
+import '@shared/container';
+import swaggerUi from 'swagger-ui-express';
+import upload from '@config/upload';
 import { AppError } from '@shared/errors/AppError';
-import { router } from '@shared/infra/http/routes';
-import swaggerFile from '../../../swagger.json';
 import createConnection from '@shared/infra/typeorm';
+import rateLimiter from '@shared/infra/http/middlewares/rateLimiter';
+
+import swaggerFile from '../../../swagger.json';
+import { router } from '@shared/infra/http/routes';
 
 createConnection();
+
 const app = express();
+
+// app.use(rateLimiter);
+
 app.use(json());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
+app.use('/avatar', express.static(`${upload.tmpFolder}/avatar`));
+app.use('/cars', express.static(`${upload.tmpFolder}/cars`));
 
 app.use(router);
 

@@ -1,19 +1,28 @@
 import { ICreateUserDTO } from '@modules/accounts/dtos/ICreateUserDTO';
 import { UsersRepositoryInMemory } from '@modules/accounts/repositories/inMemory/UsersRepositoryInMemory';
+import { UsersTokensRepositoryInMemory } from '@modules/accounts/repositories/inMemory/UsersTokensRepositoryInMemory';
+import { DayjsDateProvider } from '@shared/container/providers/DateProvider/implementations/DayjsDateProvider';
 import { AppError } from '@shared/errors/AppError';
 import { CreateUserUseCase } from '../CreateUser/CreateUserUseCase';
 import { AuthenticateUserUseCase } from './AuthenticateUserUseCase';
 
 let authenticateUserUseCase: AuthenticateUserUseCase;
 let usersRepositoryInMemory: UsersRepositoryInMemory;
+let usersTokensRepositoryInMemory: UsersTokensRepositoryInMemory;
+let dateProvider: DayjsDateProvider;
 let createUserUseCase: CreateUserUseCase;
 
 describe('Authenticate user', () => {
   beforeEach(() => {
     usersRepositoryInMemory = new UsersRepositoryInMemory();
     createUserUseCase = new CreateUserUseCase(usersRepositoryInMemory);
+    usersTokensRepositoryInMemory = new UsersTokensRepositoryInMemory();
+    dateProvider = new DayjsDateProvider();
+
     authenticateUserUseCase = new AuthenticateUserUseCase(
       usersRepositoryInMemory,
+      usersTokensRepositoryInMemory,
+      dateProvider,
     );
   });
 
@@ -38,7 +47,7 @@ describe('Authenticate user', () => {
   it('should not be able to authenticate a non-existent user', async () => {
     await expect(
       authenticateUserUseCase.execute({
-        email: 'false@email.com',
+        email: 'inu@heihawa.ca',
         password: 'falsepassword',
       }),
     ).rejects.toEqual(new AppError('Email or password incorrect'));
@@ -46,10 +55,10 @@ describe('Authenticate user', () => {
 
   it('should not be able to authenticate with incorrect password', async () => {
     const user: ICreateUserDTO = {
-      name: 'User Name',
-      email: 'user@email.com',
+      name: 'Mason',
+      email: 'emjuv@itwo.im',
       password: 'userpassword',
-      driver_license: '1234',
+      driver_license: '12345',
     };
 
     await createUserUseCase.execute(user);

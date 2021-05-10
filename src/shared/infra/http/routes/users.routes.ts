@@ -5,12 +5,14 @@ import multer from 'multer';
 import uploadConfig from '@config/upload';
 import { ensureAuthenticated } from '../middlewares/ensureAuthenticated';
 import { ensureAdmin } from '../middlewares/ensureAdmin';
+import { UserProfileController } from '@modules/accounts/useCases/UserProfile/UserProfileController';
 
 const usersRoutes = Router();
 
-const uploadAvatar = multer(uploadConfig.upload('./tmp/avatar'));
+const uploadAvatar = multer(uploadConfig);
 
 const createUserController = new CreateUserController();
+const userProfileController = new UserProfileController();
 const updateUserAvatarController = new UpdateUserAvatarController();
 
 usersRoutes.post(
@@ -19,6 +21,8 @@ usersRoutes.post(
   ensureAdmin,
   createUserController.handle,
 );
+
+usersRoutes.get('/profile', ensureAuthenticated, userProfileController.handle);
 
 usersRoutes.patch(
   '/avatar',

@@ -5,3 +5,6 @@ ormconfig.json
 
 tmp/avatar/*
 !tmp/avatar/.gitkeep
+
+.env
+coverage
